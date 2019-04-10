@@ -1,56 +1,62 @@
-
 <!DOCTYPE html>
 <html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Deno!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
 <body>
 
-<h1>Deno First Socket Chat</h1>
+<h1>Deno Socket Chat</h1>
 
 
 <input id="messageInput" value="" placeholder="Enter a message.."/>
-<button onclick="sendMessage();">Send</button >
-  <button onclick="close();">Close</button >
+<button onclick="sendMessage();">Send</button>
+<button onclick="close();">Close</button>
 
 
 <ul class="messages">
 </ul>
 <script>
-  let exampleSocket = new WebSocket("ws://0.0.0.0:3000/ws");
+    let exampleSocket = new WebSocket("ws://0.0.0.0:3000/ws");
 
-  console.log(exampleSocket);
+    console.log(exampleSocket);
 
-  exampleSocket.onopen = function (event) {
-    console.log("Socket connection is open");
-  };
+    exampleSocket.onopen = function (event) {
+        console.log("Socket connection is open");
+    };
 
-  exampleSocket.onmessage = function (event) {
-    const data = JSON.parse(event.data);
-    console.log(data);
+    exampleSocket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        console.log(data);
 
-    const messages = document.querySelector(".messages");
-    const newMessage = document.createElement("li");
-    //newMessage.innerHtml = `<div>${Date(data.date)} - ${data.text}</div>`;
-    newMessage.innerHTML = '<div>' + Date(data.date) +' - ' + data.text +'</div>';
+        const messages = document.querySelector(".messages");
+        const newMessage = document.createElement("li");
+        //newMessage.innerHtml = `<div>${Date(data.date)} - ${data.text}</div>`;
+        newMessage.innerHTML = "<div>" + new Date(data.date).toLocaleDateString() + " - " + data.text + "</div>";
 
-    messages.appendChild(newMessage);
-  }
+        messages.appendChild(newMessage);
+    };
 
-function close(){
-  exampleSocket.close();
-}
+    function close() {
+        exampleSocket.close();
+    }
 
-function sendMessage() {
-  const messageInput = document.querySelector("#messageInput");
-  // Construct a msg object containing the data the server needs to process the message from the chat client.
-  const msg = {
-    text: messageInput.value,
-    date: Date.now()
-  };
+    function sendMessage() {
+        const messageInput = document.querySelector("#messageInput");
+        // Construct a msg object containing the data the server needs to process the message from the chat client.
+        const msg = {
+            text: messageInput.value,
+            date: Date.now()
+        };
 
-  const message = JSON.stringify(msg);
-  console.log(message);
-  exampleSocket.send(message);
-  messageInput.value = "";
-}
+        const message = JSON.stringify(msg);
+        console.log(message);
+        exampleSocket.send(message);
+        messageInput.value = "";
+    }
 </script>
 </body>
 </html>
