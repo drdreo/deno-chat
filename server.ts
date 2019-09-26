@@ -41,8 +41,6 @@ async function main(): Promise<void> {
                             await client.send(ev);
                             console.log('message sent to client');
                         }
-
-                        // await sock.send(ev);
                     } else if (ev instanceof Uint8Array) {
                         // binary message
                         console.log('ws:Binary', ev);
@@ -55,7 +53,8 @@ async function main(): Promise<void> {
                         const {code, reason} = ev;
                         console.log('ws:Close', code, reason);
 
-                        //  clients = clients.filter(s => s.conn.rid === sock.conn.rid);
+                        //remove socket from clients
+                        clients = clients.filter(s => s.conn.rid !== sock.conn.rid);
                     }
                 } catch (e) {
                     console.error(`failed to receive frame: ${e}`);
