@@ -63,7 +63,7 @@
         const messages = document.querySelector(".messages");
         const newMessage = document.createElement("li");
         //newMessage.innerHtml = `<div>${Date(data.date)} - ${data.text}</div>`;
-        newMessage.innerHTML = "<div>" + new Date(data.date).toLocaleDateString()  + " - " + data.text + "</div>";
+        newMessage.innerHTML = "<div>" + new Date(data.date).toLocaleTimeString()  + " - " + data.text + "</div>";
 
         messages.appendChild(newMessage);
     };
